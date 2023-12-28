@@ -5,13 +5,25 @@ import {useRouter} from "next/navigation";
 import axios from "axios";
 
 const LoginPage = () => {
+	const router = useRouter();
 	const [user, setUser] = useState({
 		email: "",
 		password: "",
 	});
 
 	// onSubmit function
-	const onSubmit = async () => {};
+	const onSubmit = async () => {
+		try {
+			const response = await axios.post("/api/users/login", user);
+			console.log(response);
+			if (response.data.success) {
+				console.log(response.data);
+				router.push("/");
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen py-2">
 			<h1 className="text-2xl tracking-wider rounded-lg mb-10 text-center text-black py-3 px-4 bg-purple-300">
@@ -23,7 +35,7 @@ const LoginPage = () => {
 			</label>
 			<input
 				className="text-black p-2 min-w-[300px] rounded-md outline-none"
-				type="text"
+				type="email"
 				placeholder="email"
 				value={user.email || ""}
 				onChange={(e) => setUser({...user, email: e.target.value})}
@@ -45,7 +57,9 @@ const LoginPage = () => {
 			>
 				Submit
 			</button>
-			<Link className="mt-3 text-gray-400" href="/signup">Not Registered Signup Here{">>"} </Link>
+			<Link className="mt-3 text-gray-400" href="/signup">
+				Not Registered Signup Here{">>"}{" "}
+			</Link>
 		</div>
 	);
 };

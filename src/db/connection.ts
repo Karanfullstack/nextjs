@@ -2,7 +2,7 @@ import mongoose, {Connection} from "mongoose";
 const {MONGO_URI} = process.env;
 
 if (!MONGO_URI) {
-	throw new Error("Lack of MONGO_URI");
+	throw new Error("MONGO_URI REQUIRED");
 }
 // Pool connection
 let cachedConnection: Connection | null = null;

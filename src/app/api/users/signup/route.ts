@@ -8,17 +8,19 @@ export async function POST(request: NextRequest) {
 		const {email, password, username} = await request.json();
 		if (!username || !email || !password) {
 			return NextResponse.json(
-				{error: "Please fill all fields"},
+				{message: "Please fill all fields"},
 				{status: 400}
 			);
 		}
-		console.log(email, password, username);
+
+  // Databse Connection
 		await DB_CONNECTION();
 
 		// finding user if exists
 		const user = await User.findOne({email});
+		
 		if (user) {
-			return NextResponse.json({error: "User already exists"}, {status: 400});
+			return NextResponse.json({message: "User already exists"}, {status: 400});
 		}
 		// hashing password;
 		const hashedPassword = await bcrypt.hash(password, 10);
