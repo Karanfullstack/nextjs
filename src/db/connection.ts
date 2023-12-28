@@ -6,13 +6,13 @@ if (!MONGO_URI) {
 }
 // Pool connection
 let cachedConnection: Connection | null = null;
-export const dbConnection = async (): Promise<Connection> => {
+export const DB_CONNECTION = async (): Promise<Connection> => {
 	if (cachedConnection) {
-		console.log("cahced connection");
+		console.log("cached connection");
 		return cachedConnection;
 	}
-	const connection = await mongoose.connect(MONGO_URI as string);
-	cachedConnection = connection.connection; // mongoose.connection
+	const DB = await mongoose.connect(MONGO_URI as string);
+	cachedConnection = DB.connection; // mongoose.connection
 	console.log("first connection");
-	return connection.connection;
+	return DB.connection;
 };
