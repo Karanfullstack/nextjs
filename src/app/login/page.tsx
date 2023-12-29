@@ -4,7 +4,7 @@ import React, {useState, useEffect} from "react";
 import {useRouter} from "next/navigation";
 import axios from "axios";
 
-const LoginPage = () => {
+export const LoginPage = () => {
 	const router = useRouter();
 	const [user, setUser] = useState({
 		email: "",
@@ -18,7 +18,7 @@ const LoginPage = () => {
 			console.log(response);
 			if (response.data.success) {
 				console.log(response.data);
-				router.push("/");
+				router.push("/profile");
 			}
 		} catch (error) {
 			console.log(error);
@@ -63,5 +63,4 @@ const LoginPage = () => {
 		</div>
 	);
 };
-
 export default LoginPage;

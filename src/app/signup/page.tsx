@@ -29,7 +29,7 @@ const SignupPage = () => {
 
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen py-2">
-			<h1 className="text-1xl tracking-wider rounded-lg mb-10 text-center text-black py-3 px-4 bg-purple-300">
+			<h1 className="text-2xl tracking-wider rounded-lg mb-10 text-center text-black py-3 px-4 bg-purple-300">
 				Signup
 			</h1>
 			<label className="text-1xl mb-2 mt-2" htmlFor="email">
