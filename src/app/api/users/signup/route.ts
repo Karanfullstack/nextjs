@@ -1,7 +1,10 @@
 import {DB_CONNECTION} from "@/db/connection";
 import User from "@/models/userModel";
 import {NextRequest, NextResponse} from "next/server";
-import bcrypt from "bcryptjs";
+import {hashPasswordUtil} from "@/helpers/hashPasswordUtil";
+import {sendMail} from "@/helpers/mailer";
+import {serviceType} from "@/constants/sendType";
+
 
 export async function POST(request: NextRequest) {
 	try {
@@ -13,17 +16,18 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-  // Databse Connection
+		// Databse Connection
 		await DB_CONNECTION();
 
 		// finding user if exists
 		const user = await User.findOne({email});
-		
+
 		if (user) {
 			return NextResponse.json({message: "User already exists"}, {status: 400});
 		}
 		// hashing password;
-		const hashedPassword = await bcrypt.hash(password, 10);
+		const hashedPassword = await hashPasswordUtil(password);
+
 		// creating new user
 		const newUser = new User({
 			username,
@@ -32,12 +36,25 @@ export async function POST(request: NextRequest) {
 		});
 		// saving user
 		await newUser.save();
+
+		// sending email to verify user email
+		const mailResponse = await sendMail({
+			email: newUser.email,
+			emailType: serviceType.VERIFY_EMAIL,
+			userId: newUser._id,
+		});
 		// returning user
 		return NextResponse.json(
-			{message: "User Registered Done", success: true, user: newUser},
+			{
+				message: "User Registered Verify Your Email",
+				success: true,
+				user: newUser,
+				mailResponse,
+			},
 			{status: 201}
 		);
 	} catch (error: any) {
+		console.log(error)
 		return NextResponse.json({error: error.message}, {status: 500});
 	}
 }

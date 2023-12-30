@@ -1,0 +1,4 @@
+export const serviceType = {
+	FORGET_PASSWORD: "FORGET_PASSWORD",
+	VERIFY_EMAIL: "VERIFY_EMAIL",
+};
